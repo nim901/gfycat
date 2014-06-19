@@ -78,16 +78,16 @@ class gfycatMore(object):
         super(gfycatMore, self).__init__()
         self.debug = debug
         self.res = param
-        self.json = param.json["gfyItem"]
+        self.js = param.json["gfyItem"]
 
     def raw(self):
         return self.res.raw
 
     def json(self):
-        return self.json
+        return self.js
 
     def get(self, what):
-        print self.json
-        if not what in self.json:
+        print self.js
+        if not what in self.js:
             return "Sorry, couldn't find that."
-        return self.json[what]
+        return self.js[what]
