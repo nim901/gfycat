@@ -6,7 +6,6 @@
  # @copyright   Nimrod Goldrat 2014
  #
 ##
-
 from collections import namedtuple
 
 class gfycat(object):
@@ -16,16 +15,21 @@ class gfycat(object):
     3. query an existing gfycat link
     4. query if a link is already exist
     """
-    def __init__(self,param, url="upload.gfycat.com", debug=False):
+    def __init__(self, param, debug=False):
         import random,string
         super(gfycat, self).__init__()
+        self.debug = debug
+        url="upload.gfycat.com"
         randomString = ''.join(random.choice
             (string.ascii_uppercase + string.digits) for _ in range(5))
-        self.res = self.__fetch(
-            url, "/transcode/%s?fetchUrl=%s" % (randomString,param))
+        self.res = self.__fetch(url,
+            "/transcode/%s?fetchUrl=%s" % (randomString,param))
+        if "error" in self.res.json:
+            raise ValueError("%s" % self.res.json["error"])
 
     def __writeDebug(self, what):
         console.log("")
+
     def __fetch(self,url, param):
         import httplib, json
         conn = httplib.HTTPConnection(url)
@@ -36,35 +40,13 @@ class gfycat(object):
         ret = namedtuple("res", "raw json")
         return ret(raw=res, json=json.loads(res))
 
-    def getRaw(self):
+    def raw(self):
         return self.res.raw
 
-    def getJson(self):
+    def json(self):
         return self.res.json
 
-    def webmUrl(self):
-        return self.res.json["webmUrl"]
-
-    def gfyName(self):
-        return self.res.json["gfyname"]
-
-    def mp4Url(self):
-        return self.res.json["mp4Url"]
-
-    def frameRate(self):
-        return self.res.json["frameRate"]
-
-    def gifWidth(self):
-        return self.res.json["gifWidth"]
-
-    def gifSize(self):
-        return self.res.json["gifSize"]
-
-    def gfysize(self):
-        return self.res.json["gfysize"]
-
-    def gifUrl(self):
-        return self.res.json["gifUrl"]
-
-    # gfycat lets you choose between those two options, so do I :)
-    gfyname = gfyName
+    def get(self,what):
+        if not what in self.res.json:
+            return "Sorry, couldn't find that."
+        return self.res.json[what]
