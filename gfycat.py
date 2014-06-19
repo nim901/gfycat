@@ -15,17 +15,9 @@ class gfycat(object):
     3. query an existing gfycat link
     4. query if a link is already exist
     """
-    def __init__(self, param, debug=False):
-        import random,string
+    def __init__(self, debug=False):
         super(gfycat, self).__init__()
         self.debug = debug
-        url="upload.gfycat.com"
-        randomString = ''.join(random.choice
-            (string.ascii_uppercase + string.digits) for _ in range(5))
-        self.res = self.__fetch(url,
-            "/transcode/%s?fetchUrl=%s" % (randomString,param))
-        if "error" in self.res.json:
-            raise ValueError("%s" % self.res.json["error"])
 
     def __writeDebug(self, what):
         console.log("")
@@ -40,6 +32,33 @@ class gfycat(object):
         ret = namedtuple("res", "raw json")
         return ret(raw=res, json=json.loads(res))
 
+    def upload(self, param):
+        import random,string
+        randomString = ''.join(random.choice
+            (string.ascii_uppercase + string.digits) for _ in range(5))
+        url="upload.gfycat.com"
+        res = self.__fetch(url,
+            "/transcode/%s?fetchUrl=%s" % (randomString, param))
+        if "error" in res.json:
+            raise ValueError("%s" % res.json["error"])
+        return gfycatUpload(res, self.debug)
+
+    def more(self, param):
+        url="gfycat.com"
+        res = self.__fetch(url, "/cajax/get/%s" % param)
+        if "error" in res.json["gfyItem"]:
+             raise ValueError("%s" % self.json["error"])
+        return gfycatMore(res, self.debug)
+
+class gfycatUpload(object):
+    """
+    W.I.P
+    """
+    def __init__(self, param, debug=False):
+        super(gfycatUpload, self).__init__()
+        self.debug = debug
+        self.res = param
+
     def raw(self):
         return self.res.raw
 
@@ -50,3 +69,25 @@ class gfycat(object):
         if not what in self.res.json:
             return "Sorry, couldn't find that."
         return self.res.json[what]
+
+class gfycatMore(object):
+    """
+    W.I.P
+    """
+    def __init__(self, param, debug=False):
+        super(gfycatMore, self).__init__()
+        self.debug = debug
+        self.res = param
+        self.json = param.json["gfyItem"]
+
+    def raw(self):
+        return self.res.raw
+
+    def json(self):
+        return self.json
+
+    def get(self, what):
+        print self.json
+        if not what in self.json:
+            return "Sorry, couldn't find that."
+        return self.json[what]
