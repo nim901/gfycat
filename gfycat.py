@@ -47,38 +47,25 @@ class gfycat(object):
         url="gfycat.com"
         res = self.__fetch(url, "/cajax/get/%s" % param)
         if "error" in res.json["gfyItem"]:
-             raise ValueError("%s" % self.json["error"])
+             raise ValueError("%s" % self.json["gfyItem"]["error"])
         return gfycatMore(res, self.debug)
 
-class gfycatUpload(object):
+    def check(self, param):
+        url="gfycat.com"
+        res = self.__fetch(url, "/cajax/checkUrl/%s" % param)
+        if "error" in res.json:
+             raise ValueError("%s" % self.json["error"])
+        return gfycatCheck(res, self.debug)
+
+class gfycatUtils(object):
     """
     W.I.P
     """
-    def __init__(self, param, debug=False):
-        super(gfycatUpload, self).__init__()
+    def __init__(self, param, json, debug=False):
+        super(gfycatUtils, self).__init__()
         self.debug = debug
         self.res = param
-
-    def raw(self):
-        return self.res.raw
-
-    def json(self):
-        return self.res.json
-
-    def get(self,what):
-        if not what in self.res.json:
-            return "Sorry, couldn't find that."
-        return self.res.json[what]
-
-class gfycatMore(object):
-    """
-    W.I.P
-    """
-    def __init__(self, param, debug=False):
-        super(gfycatMore, self).__init__()
-        self.debug = debug
-        self.res = param
-        self.js = param.json["gfyItem"]
+        self.js = json
 
     def raw(self):
         return self.res.raw
@@ -87,7 +74,43 @@ class gfycatMore(object):
         return self.js
 
     def get(self, what):
-        print self.js
         if not what in self.js:
             return "Sorry, couldn't find that."
         return self.js[what]
+
+    def formated(self, empty=False):
+        raise NotImplementedError
+
+
+class gfycatUpload(gfycatUtils):
+    """
+    W.I.P
+    """
+    def __init__(self, param, debug=False):
+        super(gfycatUpload, self).__init__(param, param.json, debug)
+        self.debug = debug
+        self.res = param
+        self.js = param.json
+
+class gfycatMore(gfycatUtils):
+    """
+    W.I.P
+    """
+    def __init__(self, param, debug=False):
+        super(gfycatMore, self).__init__(param, param.json["gfyItem"], debug)
+        self.debug = debug
+        self.res = param
+        self.js = param.json["gfyItem"]
+
+    def redditLink(self):
+        raise NotImplementedError
+
+class gfycatCheck(gfycatUtils):
+    """
+    W.I.P
+    """
+    def __init__(self, param, debug=False):
+        super(gfycatCheck, self).__init__(param, param.json)
+        self.debug = debug
+        self.res = param
+        self.js = param.json
