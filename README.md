@@ -127,5 +127,6 @@ print check.get("urlKnown")
 
 ### TODO:
 - Finish formated() function
+- Tests
 
 Please note that although this module is working, there might still be some issues with it. if you find anything, please let me know! 
