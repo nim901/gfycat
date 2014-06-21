@@ -21,7 +21,7 @@ or the longer version:
 
 ```python
 upload = gfycat()
-upload = uplpad.upload("i.imgur.com/lKi99vn.gif")
+upload = upload.upload("i.imgur.com/lKi99vn.gif")
 ```
 
 Then, you will be able to access the returning result via:

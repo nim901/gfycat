@@ -81,9 +81,6 @@ class _gfycatUpload(_gfycatUtils):
     """
     def __init__(self, param):
         super(_gfycatUpload, self).__init__(param, param.json)
-        # This can be used for other functions related to this class
-        self.res = param
-        self.js = param.json
 
 class _gfycatMore(_gfycatUtils):
     """
@@ -91,9 +88,6 @@ class _gfycatMore(_gfycatUtils):
     """
     def __init__(self, param):
         super(_gfycatMore, self).__init__(param, param.json["gfyItem"])
-        # This can be used for other functions related to this class
-        self.res = param
-        self.js = param.json["gfyItem"]
 
 class _gfycatCheck(_gfycatUtils):
     """
@@ -101,6 +95,3 @@ class _gfycatCheck(_gfycatUtils):
     """
     def __init__(self, param):
         super(_gfycatCheck, self).__init__(param, param.json)
-        # This can be used for other functions related to this class
-        self.res = param
-        self.js = param.json
