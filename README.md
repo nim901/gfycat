@@ -3,15 +3,16 @@ gfycatuploader
 
 A very simple module that allows you to
 
-    1. upload a gif to gfycat
-    2. query the upload url
-    3. query an existing gfycat link
-    4. query if a link is already exist
+    1. upload a gif to gfycat from a remote location
+    2. upload a gif to gfycat from the local machine
+    3. query the upload url
+    4. query an existing gfycat link
+    5. query if a link is already exist
 
 ## Usage:
 
 ### upload a file:
-uploading a file is very easy:
+uploading a file from remote is very easy:
 
 ```python
 upload = gfycat().upload("i.imgur.com/lKi99vn.gif")
@@ -22,6 +23,12 @@ or the longer version:
 ```python
 upload = gfycat()
 upload = upload.upload("i.imgur.com/lKi99vn.gif")
+```
+
+you can also upload a file from your local machine (for this you will have to use the requests module):
+
+```python
+upload = gfycat().uploadFile(r"C:\not\funny\sample.gif")
 ```
 
 Then, you will be able to access the returning result via:
