@@ -16,7 +16,6 @@ class gfycat(object):
     def __fetch(self, url, param):
         import urllib2
         import json
-        print(url+param)
         try:
             # added simple User-Ajent string to avoid CloudFlare block this request
             headers = { 'User-Agent' : 'Mozilla/5.0' }
