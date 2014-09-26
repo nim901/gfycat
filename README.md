@@ -1,4 +1,4 @@
-gfycatuploader
+gfycat
 ==========
 
 A very simple module that allows you to
