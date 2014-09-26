@@ -8,24 +8,25 @@ A very simple module that allows you to
     3. query the upload url
     4. query an existing gfycat link
     5. query if a link is already exist
+    6. download the mp4 file
 
 ## Usage:
 
 ### upload a file:
-uploading a file from remote is very easy:
+Uploading a file from remote is very easy:
 
 ```python
 upload = gfycat().upload("i.imgur.com/lKi99vn.gif")
 ```
 
-or the longer version:
+Or the longer version:
 
 ```python
 upload = gfycat()
 upload = upload.upload("i.imgur.com/lKi99vn.gif")
 ```
 
-you can also upload a file from your local machine (for this you will have to use the requests module):
+You can also upload a file from your local machine (for this you will have to use the requests module):
 
 ```python
 upload = gfycat().uploadFile(r"C:\not\funny\sample.gif")
@@ -40,7 +41,7 @@ print upload.formated()
 print upload.get("someValue")
 ```
 
-the result of the last 2 prints will be:
+The result of the last 2 prints will be:
 
 ```python
 print upload.formated()
@@ -61,7 +62,9 @@ print upload.get("webmUrl")
 ```
 
 ### query an existing gfycat link:
-you can query an existing link in order to get more details:
+
+You can query an existing link in order to get more details:
+
 ```python
 query = gfycat().more("gfycatName")
 ```
@@ -75,7 +78,7 @@ print query.formated()
 print query.get("someValue")
 ```
 
-the result of the last 2 prints will be:
+The result of the last 2 prints will be:
 
 ```python
 print query.formated()
@@ -98,8 +101,10 @@ print upload.get("redditIdText")
 
     flying_through_an_iceberg
 ```
+
 ### query if a link is already exist:
-this will be used if you want to quickly see if a link is already known to gfycat:
+
+This will be used if you want to quickly see if a link is already known to gfycat:
 
 ```python
 check = gfycat().check("i.imgur.com/lKi99vn.gif")
@@ -114,7 +119,7 @@ print check.formated()
 print check.get("someValue")
 ```
 
-the result of the last 2 prints will be:
+The result of the last 2 prints will be:
 
 ```python
 print check.formated()
@@ -131,6 +136,24 @@ print check.get("urlKnown")
 
     True
 ```
+
+### Download a file:
+
+To download a file you will first have to create a gfycat object and than use the .download method:
+
+```python
+    downloadMe = gfycat().upload("i.imgur.com/lKi99vn.gif")
+    downloadMe.download("C:\\trash\\bb.mp4")
+```
+
+Note that you dont have to specify the file name, but the location will have to end with either "\" or "/":
+
+```python
+    downloadMe = gfycat().upload("i.imgur.com/lKi99vn.gif")
+    downloadMe.download("C:\\trash\\")
+```
+
+If you use this way, the file name will be "gfyName".mp4
 
 ### TODO:
 - Finish formated() function
