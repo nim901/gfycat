@@ -9,21 +9,31 @@ class gfycat(object):
     4. query an existing gfycat link
     5. query if a link is already exist
     """
+
     def __init__(self):
         super(gfycat, self).__init__()
 
-    def __fetch(self,url, param):
-        import urllib2, json
-        connection = urllib2.urlopen(url+param).read()
+    def __fetch(self, url, param):
+        import urllib2
+        import json
+        print(url+param)
+        try:
+            # added simple User-Ajent string to avoid CloudFlare block this request
+            headers = { 'User-Agent' : 'Mozilla/5.0' }
+            req = urllib2.Request(url+param, None, headers)
+            connection = urllib2.urlopen(req).read()
+        except urllib2.HTTPError, err:
+            raise ValueError(err.read())
         result = namedtuple("result", "raw json")
         return result(raw=connection, json=json.loads(connection))
 
     def upload(self, param):
-        import random, string
+        import random
+        import string
         # gfycat needs to get a random string before our search parameter
         randomString = ''.join(random.choice
             (string.ascii_uppercase + string.digits) for _ in range(5))
-        url="http://upload.gfycat.com"
+        url = "http://upload.gfycat.com"
         result = self.__fetch(url,
             "/transcode/%s?fetchUrl=%s" % (randomString, param))
         if "error" in result.json:
@@ -38,13 +48,15 @@ class gfycat(object):
 
     def __fileHandler(self, file):
         # Thanks thesourabh for the implementation
-        import random, string, requests
+        import random
+        import string
+        import requests
         # gfycat needs a random key before upload
         key = ''.join(random.choice
             (string.ascii_uppercase + string.digits) for _ in range(10))
         # Urls settings.
         post_url = 'https://gifaffe.s3.amazonaws.com/'
-        get_url="http://upload.gfycat.com/transcode/"
+        get_url = "http://upload.gfycat.com/transcode/"
         # gfycat form data
         form = [('key', key)]
         form.append(('acl', 'private'))
@@ -61,7 +73,6 @@ class gfycat(object):
         req = requests.get(get_url+key)
         result = namedtuple("result", "raw json")
         return result(raw=req, json=req.json())
-
 
     def more(self, param):
         url="http://gfycat.com"
